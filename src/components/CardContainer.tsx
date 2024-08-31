@@ -3,7 +3,7 @@ import Card from "./Card";
 import styles from "./Card.module.css";
 
 interface CardContainerProps {
-  cards: string[];
+  cards: { value: string; imageUrl: string }[]; // Update cards prop to include imageUrl
 }
 
 const CardContainer: React.FC<CardContainerProps> = ({ cards }) => {
@@ -14,7 +14,7 @@ const CardContainer: React.FC<CardContainerProps> = ({ cards }) => {
 
   return (
     <div className={styles.cardContainer}>
-      {cards.map((cardValue, index) => {
+      {cards.map((card, index) => {
         const angle = startAngle + index * angleStep;
         return (
           <Card
@@ -26,9 +26,9 @@ const CardContainer: React.FC<CardContainerProps> = ({ cards }) => {
               }px)`, // Rotate and translate each card
               transformOrigin: "bottom center", // Rotate around the bottom center
             }}
-          >
-            {cardValue}
-          </Card>
+            cardValue={card.value}
+            imageUrl={card.imageUrl} // Pass imageUrl to Card component
+          />
         );
       })}
     </div>
