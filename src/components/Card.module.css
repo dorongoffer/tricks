@@ -1,0 +1,30 @@
+.cardContainer {
+  position: relative;
+  height: 200px; /* Adjust as needed */
+  width: 100%; /* Adjust as needed */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+  padding: 20px; /* Add some padding */
+  background-color: #f8f9fa; /* Light background color */
+  border: 1px solid #dee2e6; /* Border for the container */
+  border-radius: 8px; /* Rounded corners for the container */
+}
+
+.card {
+  position: absolute; /* Use absolute positioning */
+  border-radius: 12px;
+  z-index: 1;
+  height: 150px;
+  width: 100px;
+  border: 1px solid #343a40; /* Dark border for the card */
+  background-color: #ffffff; /* White background for the card */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for the card */
+  display: flex;
+  align-items: flex-start; /* Align items to the top */
+  justify-content: flex-start; /* Align items to the left */
+  padding: 2px; /* Add some padding */
+  font-size: 0.8rem; /* Larger font size for card value */
+  transition: transform 0.3s ease; /* Smooth transition for transform */
+}
