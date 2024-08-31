@@ -4,7 +4,7 @@
   width: 100%; /* Adjust as needed */
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center; /* Center the cards horizontally */
   overflow-x: auto; /* Allow horizontal scrolling if needed */
   padding: 20px; /* Add some padding */
   background-color: #f8f9fa; /* Light background color */
@@ -27,4 +27,5 @@
   padding: 2px; /* Add some padding */
   font-size: 0.8rem; /* Larger font size for card value */
   transition: transform 0.3s ease; /* Smooth transition for transform */
+  transform-origin: bottom center; /* Rotate around the bottom center */
 }
