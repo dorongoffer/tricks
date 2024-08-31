@@ -16,8 +16,7 @@ const Card: React.FC<CardProps> = ({
 }) => {
   return (
     <div className={`${styles.card} ${className}`} style={style}>
-      <img src={imageUrl} alt={cardValue} className={styles.cardImage} />{" "}
-      {/* Display card image */}
+      <img src={imageUrl} alt={cardValue} className={styles.cardImage} />
       <div className={styles.cardValue}>{cardValue}</div>
     </div>
   );
