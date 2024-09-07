@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import Card from "./Card";
+import { Card } from "./Card"; // Import Card interface
+import CardTemplate from "./Card"; // Import CardTemplate component
 import styles from "./Card.module.css";
 
 interface CardContainerProps {
-  cards: { value: string; imageUrl: string }[];
+  cards: Card[];
 }
 
 const CardContainer: React.FC<CardContainerProps> = ({ cards }) => {
   const [cardWidth, setCardWidth] = useState(100); // Default value
+  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
 
   useEffect(() => {
     // Get the card width from the CSS variable
@@ -17,29 +19,65 @@ const CardContainer: React.FC<CardContainerProps> = ({ cards }) => {
   }, []);
 
   const totalCards = cards.length;
-  const angleStep = cardWidth / 45; // Calculate angle step based on card width
+  const angleStep = cardWidth / 25; // Calculate angle step based on card width
   const radius = 300; // Radius of the arc
+
+  const handleCardClick = (card: Card) => {
+    if (selectedCard && selectedCard.isEqual(card)) {
+      // Play the card
+      console.log("Card played:", card);
+      setSelectedCard(null);
+    } else {
+      setSelectedCard(card);
+    }
+  };
+
+  useEffect(() => {
+    // Handle outside click
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!(event.target as HTMLElement).closest(`.${styles.card}`)) {
+        setSelectedCard(null);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className={styles.cardContainer}>
       {cards.map((card, index) => {
         const angle = (index - Math.floor(totalCards / 2)) * angleStep; // Calculate the angle for each card
+        debugger;
         const x = radius * Math.sin((angle * Math.PI) / 180); // Calculate the x position
         const y = radius * (1 - Math.cos((angle * Math.PI) / 180)); // Calculate the y position
 
+        const isSelected = selectedCard && selectedCard.isEqual(card);
+        const offsetX = isSelected
+          ? 0.25 * cardWidth * Math.sin((angle * Math.PI) / 180)
+          : 0;
+        const offsetY = isSelected
+          ? 0.25 * cardWidth * Math.cos((angle * Math.PI) / 180)
+          : 0;
+
         return (
-          <Card
+          <CardTemplate
             key={index}
-            className={styles.card}
+            className={`${styles.card} ${isSelected ? styles.selected : ""}`}
             style={{
               position: "absolute",
-              left: `calc(50% + ${x}px)`,
-              top: `calc(50% + ${y}px)`,
+              left: `calc(50% + ${x + offsetX}px)`,
+              top: `calc(50% + ${y - offsetY}px)`,
               transform: `rotate(${angle}deg)`, // Rotate each card
               transformOrigin: "bottom center", // Rotate around the bottom center
             }}
-            cardValue={card.value}
-            imageUrl={card.imageUrl}
+            card={card}
+            onClick={e => {
+              e.stopPropagation(); // Prevent triggering the outside click handler
+              handleCardClick(card);
+            }}
           />
         );
       })}
