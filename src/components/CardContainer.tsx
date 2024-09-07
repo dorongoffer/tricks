@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card } from "./Card"; // Import Card interface
+import { Card } from "./Card"; // Import Card class
 import CardTemplate from "./Card"; // Import CardTemplate component
 import styles from "./Card.module.css";
 
@@ -11,15 +11,18 @@ const CardContainer: React.FC<CardContainerProps> = ({ cards }) => {
   const [cardWidth, setCardWidth] = useState(100); // Default value
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
 
-  useEffect(() => {
-    // Get the card width from the CSS variable
-    const root = getComputedStyle(document.documentElement);
-    const width = parseFloat(root.getPropertyValue("--card-width"));
-    setCardWidth(width);
-  }, []);
+  useEffect(
+    () => {
+      // Get the card width from the CSS variable
+      const root = getComputedStyle(document.documentElement);
+      const width = parseFloat(root.getPropertyValue("--card-width"));
+      setCardWidth(width);
+    },
+    /* dependencies= */ []
+  );
 
   const totalCards = cards.length;
-  const angleStep = cardWidth / 25; // Calculate angle step based on card width
+  const angleStep = 15; // Fixed angle step for better visibility
   const radius = 300; // Radius of the arc
 
   const handleCardClick = (card: Card) => {
@@ -47,10 +50,12 @@ const CardContainer: React.FC<CardContainerProps> = ({ cards }) => {
   }, []);
 
   return (
-    <div className={styles.cardContainer}>
+    <div
+      className={styles.cardContainer}
+      style={{ position: "relative", width: "100%", height: "100%" }}
+    >
       {cards.map((card, index) => {
         const angle = (index - Math.floor(totalCards / 2)) * angleStep; // Calculate the angle for each card
-        debugger;
         const x = radius * Math.sin((angle * Math.PI) / 180); // Calculate the x position
         const y = radius * (1 - Math.cos((angle * Math.PI) / 180)); // Calculate the y position
 
@@ -69,7 +74,7 @@ const CardContainer: React.FC<CardContainerProps> = ({ cards }) => {
             style={{
               position: "absolute",
               left: `calc(50% + ${x + offsetX}px)`,
-              top: `calc(50% + ${y - offsetY}px)`,
+              top: `calc(50% + ${y + offsetY}px)`,
               transform: `rotate(${angle}deg)`, // Rotate each card
               transformOrigin: "bottom center", // Rotate around the bottom center
             }}

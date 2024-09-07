@@ -40,7 +40,6 @@ const CardTemplate: React.FC<CardTemplateArgs> = ({
         alt={`${card.rank} of ${card.suit}`}
         className={styles.cardImage}
       />
-      <div className={styles.cardValue}>{`${card.rank} of ${card.suit}`}</div>
     </div>
   );
 };
