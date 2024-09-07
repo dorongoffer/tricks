@@ -32,7 +32,8 @@ const CardTemplate: React.FC<CardTemplateArgs> = ({
 }) => {
   return (
     <div
-      className={`${styles.card} ${className} ${styles.cardCustomStyle} ${styles.cardCustomStylePosition} ${styles.cardCustomStyleLeft} ${styles.cardCustomStyleTop} ${styles.cardCustomStyleTransform}`}
+      className={`${styles.card} ${className}`}
+      style={style}
       onClick={onClick}
     >
       <img
