@@ -3,13 +3,15 @@ import { Card } from "./Card"; // Import Card class
 import CardTemplate from "./Card"; // Import CardTemplate component
 import styles from "./Card.module.css";
 
-interface CardContainerProps {
-  cards: Card[];
+interface CardContainerArgs {
+  initialCards: Card[];
 }
 
-const CardContainer: React.FC<CardContainerProps> = ({ cards }) => {
+const CardContainer: React.FC<CardContainerArgs> = ({ initialCards }) => {
   const [cardWidth, setCardWidth] = useState(100); // Default value
+  const [hand, setHand] = useState<Card[]>(initialCards);
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [playedCard, setPlayedCard] = useState<Card | null>(null);
 
   useEffect(
     () => {
@@ -21,14 +23,15 @@ const CardContainer: React.FC<CardContainerProps> = ({ cards }) => {
     /* dependencies= */ []
   );
 
-  const totalCards = cards.length;
-  const angleStep = 15; // Fixed angle step for better visibility
+  const angleStep = 2.85; // Fixed angle step for better visibility
   const radius = 300; // Radius of the arc
 
   const handleCardClick = (card: Card) => {
     if (selectedCard && selectedCard.isEqual(card)) {
       // Play the card
       console.log("Card played:", card);
+      setHand(hand.filter(c => !c.isEqual(card))); // Remove the played card from the hand
+      setPlayedCard(card);
       setSelectedCard(null);
     } else {
       setSelectedCard(card);
@@ -54,8 +57,8 @@ const CardContainer: React.FC<CardContainerProps> = ({ cards }) => {
       className={styles.cardContainer}
       style={{ position: "relative", width: "100%", height: "100%" }}
     >
-      {cards.map((card, index) => {
-        const angle = (index - Math.floor(totalCards / 2)) * angleStep; // Calculate the angle for each card
+      {initialCards.map((card, index) => {
+        const angle = (index - Math.floor(hand.length / 2)) * angleStep; // Calculate the angle for each card
         const x = radius * Math.sin((angle * Math.PI) / 180); // Calculate the x position
         const y = radius * (1 - Math.cos((angle * Math.PI) / 180)); // Calculate the y position
 
@@ -86,6 +89,19 @@ const CardContainer: React.FC<CardContainerProps> = ({ cards }) => {
           />
         );
       })}
+      {playedCard && (
+        <CardTemplate
+          key="played"
+          className={styles.playedCard}
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)", // Center the card
+          }}
+          card={playedCard}
+        />
+      )}
     </div>
   );
 };

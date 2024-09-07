@@ -28,7 +28,7 @@ const App: React.FC = () => {
   return (
     <div>
       <h1>Card Game</h1>
-      <CardContainer cards={cards} />
+      <CardContainer initialCards={cards} />
     </div>
   );
 };

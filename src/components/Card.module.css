@@ -31,3 +31,7 @@
   color: white;
   font-size: 1.2em;
 }
+
+.playedCard {
+  z-index: 20; /* Ensure the played card is on top */
+}
